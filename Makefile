@@ -10,6 +10,7 @@ C_OBJ = $(C_SRC:.c=.o)
 S_OBJ = $(S_SRC:.c=.o)
 BONUS_C_OBJ = $(BONUS_C_SRC:.c=.o)
 BONUS_S_OBJ = $(BONUS_S_SRC:.c=.o)
+HEAD = -I ./includes
 
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -g
