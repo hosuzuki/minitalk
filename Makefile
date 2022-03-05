@@ -19,8 +19,8 @@ RM = rm -f
 
 $(NAME) : $(C_OBJ) $(S_OBJ)
 	$(MAKE) -C ./libft
-	$(CC) $(C_OBJ) $(LIB) -o $(C_NAME)
-	$(CC) $(S_OBJ) $(LIB) -o $(S_NAME)
+	$(CC) $(CFLAGS) $(C_OBJ) $(LIB) -o $(C_NAME)
+	$(CC) $(CFLAGS) $(S_OBJ) $(LIB) -o $(S_NAME)
 
 all : $(NAME)
 
@@ -39,8 +39,8 @@ re : fclean all
 
 bonus : $(BONUS_C_OBJ) $(BONUS_S_OBJ)
 	$(MAKE) -C ./libft
-	$(CC) $(BONUS_C_OBJ) $(LIB) -o $(C_NAME)
-	$(CC) $(BONUS_S_OBJ) $(LIB) -o $(S_NAME)
+	$(CC) $(CFLAGS) $(BONUS_C_OBJ) $(LIB) -o $(C_NAME)
+	$(CC) $(CFLAGS) $(BONUS_S_OBJ) $(LIB) -o $(S_NAME)
 
 address	:	CFLAGS		+= -g -fsanitize=address
 address	:	LIBFTTARGET	:= address
