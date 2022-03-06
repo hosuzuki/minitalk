@@ -20,11 +20,11 @@ static void ft_send_a_byte(pid_t server_pid, char c)
 			sig_to_send = SIGUSR2;
 		if (kill(server_pid, sig_to_send) != 0)
 			ft_print_error_and_exit("kill Error\n");
-		while (sig_received == 0)
+		while (g_sig_received == 0)
 			usleep(100);
-		if (sig_received != sig_to_send)
+		if (g_sig_received != sig_to_send)
 			ft_print_error_and_exit("sig received or to send Error\n");
-		sig_received = 0;
+		g_sig_received = 0;
 		shift--;
 	}
 }
@@ -44,7 +44,7 @@ static void ft_send_char(pid_t server_pid, char *str)
 
 static void ft_handler_c(int signum)
 {
-	sig_received = signum;
+	g_sig_received = signum;
 }
 
 int main(int argc, char **argv)
