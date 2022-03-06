@@ -45,7 +45,7 @@ static void ft_send_a_byte(pid_t s_pid, char c)
 			send_sig = SIGUSR2;
 			ft_printf("SIGUSR2: %d\n", SIGUSR2);
 		}
-		if (kill(s_pid, send_sig) == -1)
+		if (kill(s_pid, send_sig) != 0)
 			ft_print_error_and_exit("kill Error\n");
 		ft_printf("s_pid: %d | send_sig: %d\n", s_pid, send_sig);
 		ft_printf("received_signal: %d\n", received_signal);
@@ -97,9 +97,9 @@ int main(int argc, char **argv)
 	sa.sa_flags = 0;
 	if (sigemptyset(&sa.sa_mask) != 0)
 		ft_print_error_and_exit("sigemptyset Error\n");
-	printf("siga~: %d\n", sigaction(SIGUSR1, &sa, NULL));
-//		if (sigaction(SIGUSR1, &sa, NULL) != 0)
-//		ft_print_error_and_exit("sigaction-SIGUSR1 Error\n");
+//	printf("siga~: %d\n", sigaction(SIGUSR1, &sa, NULL));
+	if (sigaction(SIGUSR1, &sa, NULL) != 0)
+		ft_print_error_and_exit("sigaction-SIGUSR1 Error\n");
 	if (sigaction(SIGUSR2, &sa, NULL) != 0)
 		ft_print_error_and_exit("sigaction-SIGUSR2 Error\n");
 	ft_send_str(s_pid, argv[2]);
