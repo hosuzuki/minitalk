@@ -7,6 +7,6 @@
 # include "../libft/includes/libft.h"
 # include "../libft/includes/ft_printf.h"
 
-static int sig_received = 0;
+static int g_sig_received = 0;
 
 #endif

@@ -14,8 +14,8 @@ typedef struct
 {
 	int client_pid;
 	int sig_to_receive;
-} node;
+} t_node;
 
-static node lst;
+static t_node g_lst;
 
 #endif
