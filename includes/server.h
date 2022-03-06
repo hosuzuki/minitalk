@@ -7,13 +7,15 @@
 #	include "../libft/includes/libft.h"
 #	include "../libft/includes/ft_printf.h"
 
-static int client_pid = 0;
-static int received_sig = 0;
+//static int client_pid = 0;
+//static int received_sig = 0;
 
-/*static typedef struct
+typedef struct
 {
 	int client_pid;
-	int received_sig;
+	int sig_to_receive;
 } node;
-*/
+
+static node lst;
+
 #endif
