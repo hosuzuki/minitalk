@@ -13,7 +13,7 @@ BONUS_S_OBJ = $(BONUS_S_SRC:.c=.o)
 HEAD = -I ./includes
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -g
+CFLAGS = -Wall -Wextra -Werror
 HEAD = -I ./includes/
 RM = rm -f
 
