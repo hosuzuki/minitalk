@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   server.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hokutosuzuki <hosuzuki@student.42toky      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/07 17:54:55 by hokutosuz         #+#    #+#             */
+/*   Updated: 2022/03/07 17:54:55 by hokutosuz        ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "server.h"
 
-static void ft_print_error_and_exit(char *error_msg)
+static void	ft_print_error_and_exit(char *error_msg)
 {
 	ft_printf("%s\n", error_msg);
 	exit (1);
@@ -41,7 +53,7 @@ static void	ft_receive_char(void)
 			break ;
 		write(1, &c, 1);
 	}
-  write(1, "\n-----\n", 7);
+	write(1, "\n-----\n", 7);
 }
 
 static void	ft_handler_s(int signum, siginfo_t *siginfo, void *ucontext)
@@ -51,7 +63,7 @@ static void	ft_handler_s(int signum, siginfo_t *siginfo, void *ucontext)
 	g_lst.sig_received = signum;
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
 	struct sigaction	sa;
 

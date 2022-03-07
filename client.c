@@ -1,12 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   client.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hokutosuzuki <hosuzuki@student.42toky      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/03/07 17:54:55 by hokutosuz         #+#    #+#             */
+/*   Updated: 2022/03/07 17:54:55 by hokutosuz        ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "client.h"
 
-static void ft_print_error_and_exit(char *error_msg)
+static void	ft_print_error_and_exit(char *error_msg)
 {
 	ft_printf("%s\n", error_msg);
 	exit (1);
 }
 
-static void ft_send_a_byte(pid_t server_pid, char c)
+static void	ft_send_a_byte(pid_t server_pid, char c)
 {
 	int	shift;
 	int	sig_to_send;
@@ -29,7 +41,7 @@ static void ft_send_a_byte(pid_t server_pid, char c)
 	}
 }
 
-static void ft_send_char(pid_t server_pid, char *str)
+static void	ft_send_char(pid_t server_pid, char *str)
 {
 	int	i;
 
@@ -38,20 +50,20 @@ static void ft_send_char(pid_t server_pid, char *str)
 	{
 		ft_send_a_byte(server_pid, str[i]);
 		if (str[i++] == '\0')
-			break;
+			break ;
 	}
 }
 
-static void ft_handler_c(int signum)
+static void	ft_handler_c(int signum)
 {
 	g_sig_received = signum;
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-	struct sigaction sa;
-	pid_t	server_pid;
-	
+	struct sigaction	sa;
+	pid_t				server_pid;
+
 	if (argc != 3)
 		ft_print_error_and_exit("Command Error\n");
 	server_pid = ft_atoi(argv[1]);
