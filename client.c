@@ -14,7 +14,6 @@ static void ft_send_a_byte(pid_t server_pid, char c)
 	shift = 0;
 	while (shift <= 7)
 	{
-//		if ((c & (0b00000001 << shift)) == 0)
 		if ((c & (0b10000000 >> shift)) == 0)
 			sig_to_send = SIGUSR1;
 		else

@@ -21,13 +21,10 @@ static char	ft_receive_a_byte(void)
 		sig = g_lst.sig_received;
 		g_lst.sig_received = 0;
 		if (kill(g_lst.client_pid, sig) != 0)
-//		if (kill(g_lst.client_pid, g_lst.sig_received) != 0)
 			ft_print_error_and_exit("kill Error\n");
 		c <<= 1;
 		if (sig == SIGUSR2)
-//		if (g_lst.sig_received == SIGUSR2)
 			c++;
-//		g_lst.sig_received = 0;
 		shift++;
 	}
 	return (c);
