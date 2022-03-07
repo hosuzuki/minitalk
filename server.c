@@ -9,23 +9,26 @@ static void ft_print_error_and_exit(char *error_msg)
 static char	ft_receive_a_byte(void)
 {
 	char	c;
-	int		shift_count;
 	int		sig;
+	int		shift;
 
 	c = 0;
-	shift_count = 0;
-	while (shift_count < 8)
+	shift = 0;
+	while (shift < 8)
 	{
-		while (g_lst.sig_to_receive == 0)
+		while (g_lst.sig_received == 0)
 			usleep(100);
-		sig = g_lst.sig_to_receive;
-		g_lst.sig_to_receive = 0;
+		sig = g_lst.sig_received;
+		g_lst.sig_received = 0;
 		if (kill(g_lst.client_pid, sig) != 0)
+//		if (kill(g_lst.client_pid, g_lst.sig_received) != 0)
 			ft_print_error_and_exit("kill Error\n");
 		c <<= 1;
 		if (sig == SIGUSR2)
+//		if (g_lst.sig_received == SIGUSR2)
 			c++;
-		shift_count++;
+//		g_lst.sig_received = 0;
+		shift++;
 	}
 	return (c);
 }
@@ -48,15 +51,13 @@ static void	ft_handler_s(int signum, siginfo_t *siginfo, void *ucontext)
 {
 	(void)ucontext;
 	g_lst.client_pid = siginfo->si_pid;
-	g_lst.sig_to_receive = signum;
+	g_lst.sig_received = signum;
 }
 
 int main(int argc, char **argv)
 {
 	struct sigaction	sa;
 
-	ft_printf("cp: %d\n", g_lst.client_pid);
-	ft_printf("sr: %d\n", g_lst.sig_to_receive);
 	(void)argv;
 	if (argc != 1)
 		ft_print_error_and_exit("Command Error\nex: ./server");
@@ -69,8 +70,6 @@ int main(int argc, char **argv)
 	if (sigaction(SIGUSR2, &sa, NULL) != 0)
 		ft_print_error_and_exit("sigaction-SIGUSR2 Error\n");
 	ft_printf("The Server PID: %d\n", getpid());
-	g_lst.client_pid = 0;
-	g_lst.sig_to_receive = 0;
 	while (1)
 		ft_receive_char();
 	return (0);
