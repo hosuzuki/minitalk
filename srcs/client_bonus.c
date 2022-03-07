@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.c                                           :+:      :+:    :+:   */
+/*   client_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: hokutosuzuki <hosuzuki@student.42toky      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/07 17:54:55 by hokutosuz         #+#    #+#             */
-/*   Updated: 2022/03/07 17:54:55 by hokutosuz        ###   ########.fr       */
+/*   Updated: 2022/03/07 21:36:03 by hokutosuz        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "server.h"
+#include "client_bonus.h"
 
 static void	ft_print_error_and_exit(char *error_msg)
 {
@@ -18,68 +18,65 @@ static void	ft_print_error_and_exit(char *error_msg)
 	exit (1);
 }
 
-static char	ft_receive_a_byte(void)
+static void	ft_send_a_byte(pid_t server_pid, char c)
 {
-	char	c;
-	int		sig;
-	int		shift;
+	int	shift;
+	int	sig_to_send;
 
-	c = 0;
 	shift = 0;
-	while (shift < 8)
+	while (shift <= 7)
 	{
-		while (g_lst.sig_received == 0)
-			usleep(100);
-		sig = g_lst.sig_received;
-		g_lst.sig_received = 0;
-		if (kill(g_lst.client_pid, sig) != 0)
+		if ((c & (0b10000000 >> shift)) == 0)
+			sig_to_send = SIGUSR1;
+		else
+			sig_to_send = SIGUSR2;
+		if (kill(server_pid, sig_to_send) != 0)
 			ft_print_error_and_exit("kill Error\n");
-		c <<= 1;
-		if (sig == SIGUSR2)
-			c++;
+		while (g_sig_received == 0)
+			usleep(100);
+		if (g_sig_received != sig_to_send)
+			ft_print_error_and_exit("sig received or to send Error\n");
+		g_sig_received = 0;
 		shift++;
 	}
-	return (c);
 }
 
-static void	ft_receive_char(void)
+static void	ft_send_char(pid_t server_pid, char *str)
 {
-	char	c;
+	int	i;
 
+	i = 0;
 	while (1)
 	{
-		c = ft_receive_a_byte();
-		if (c == '\0')
+		ft_send_a_byte(server_pid, str[i]);
+		if (str[i++] == '\0')
 			break ;
-		write(1, &c, 1);
 	}
-	write(1, "\n-----\n", 7);
 }
 
-static void	ft_handler_s(int signum, siginfo_t *siginfo, void *ucontext)
+static void	ft_handler_c(int signum)
 {
-	(void)ucontext;
-	g_lst.client_pid = siginfo->si_pid;
-	g_lst.sig_received = signum;
+	g_sig_received = signum;
 }
 
 int	main(int argc, char **argv)
 {
 	struct sigaction	sa;
+	pid_t				server_pid;
 
-	(void)argv;
-	if (argc != 1)
-		ft_print_error_and_exit("Command Error\nex: ./server");
-	sa.sa_sigaction = ft_handler_s;
-	sa.sa_flags = SA_SIGINFO;
+	if (argc != 3)
+		ft_print_error_and_exit("Command Error\n");
+	server_pid = ft_atoi(argv[1]);
+	if (server_pid <= 0)
+		ft_print_error_and_exit("Invalid Server PID\n");
+	sa.sa_handler = ft_handler_c;
+	sa.sa_flags = 0;
 	if (sigemptyset(&sa.sa_mask) != 0)
 		ft_print_error_and_exit("sigemptyset Error\n");
 	if (sigaction(SIGUSR1, &sa, NULL) != 0)
 		ft_print_error_and_exit("sigaction-SIGUSR1 Error\n");
 	if (sigaction(SIGUSR2, &sa, NULL) != 0)
 		ft_print_error_and_exit("sigaction-SIGUSR2 Error\n");
-	ft_printf("The Server PID: %d\n", getpid());
-	while (1)
-		ft_receive_char();
+	ft_send_char(server_pid, argv[2]);
 	return (0);
 }
