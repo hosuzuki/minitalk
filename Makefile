@@ -1,8 +1,6 @@
 NAME = minitalk
 C_NAME = client
 S_NAME = server
-#BONUS_C_NAME = client_bonus
-#BONUS_S_NAME = server_bonus
 C_SRC = srcs/client.c
 S_SRC	= srcs/server.c
 BONUS_C_SRC = srcs/client_bonus.c
@@ -53,14 +51,5 @@ re : fclean all
 
 bonus :
 	$(MAKE) BONUS_ON=1
-
-
-#bonus : $(BONUS_C_NAME) $(BONUS_S_NAME)
-
-#$(BONUS_C_NAME) : $(BONUS_C_OBJ) $(LIB)
-#	$(CC) $(CFLAGS) $(BONUS_C_OBJ) $(LIB) -o client
-
-#$(BONUS_S_NAME) : $(BONUS_S_OBJ) $(LIB)
-#	$(CC) $(CFLAGS) $(BONUS_S_OBJ) $(LIB) -o server
 
 .PHONEY : all clean fclean re bonus
