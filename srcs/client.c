@@ -65,7 +65,7 @@ int	main(int argc, char **argv)
 	pid_t				server_pid;
 
 	if (argc != 3)
-		ft_print_error_and_exit("Command Error\n");
+		ft_print_error_and_exit("Usage: ./client [Server PID] [String to send]\n");
 	server_pid = ft_atoi(argv[1]);
 	if (server_pid <= 0)
 		ft_print_error_and_exit("Invalid Server PID\n");
