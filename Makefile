@@ -3,18 +3,8 @@ C_NAME = client
 S_NAME = server
 C_SRC = srcs/client.c
 S_SRC	= srcs/server.c
-BONUS_C_SRC = srcs/client_bonus.c
-BONUS_S_SRC = srcs/server_bonus.c
 C_OBJ = $(C_SRC:.c=.o)
 S_OBJ = $(S_SRC:.c=.o)
-BONUS_C_OBJ = $(BONUS_C_SRC:.c=.o)
-BONUS_S_OBJ = $(BONUS_S_SRC:.c=.o)
-ifdef BONUS_ON
-C_SRC = $(BONUS_C_SRC)
-S_SRC = $(BONUS_S_SRC)
-C_OBJ = $(BONUS_C_OBJ)
-S_OBJ = $(BONUS_S_OBJ)
-endif
 
 LIB = ./libft/libft.a
 
