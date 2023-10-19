@@ -16,8 +16,8 @@
 # include <sys/types.h>
 # include <signal.h>
 # include <unistd.h>
-# include "../libft/includes/libft.h"
-# include "../libft/includes/ft_printf.h"
+# include "../ft_printf/libft/includes/libft.h"
+# include "../ft_printf/includes/ft_printf.h"
 
 typedef struct s_server_list
 {
